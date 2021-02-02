@@ -1,9 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react';
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
     useHistory
   } from 'react-router-dom';
-import { posttoapi } from '../apiRequests';
 import {AuthContext} from '../Context';
 
 import {getfromapi, putToApi} from '../apiRequests';
@@ -17,12 +16,11 @@ const UpdateCourse = () => {
 
     const { id } = useParams();
 
-    let [course, setCourse] = useState(null);
-    const [title, setTitle] = useState(null);
-    const [description, setDescription] = useState(null);
-    const [estTime, setEstTime] = useState(null);
-    const [materials, setMaterials] = useState(null);
-    const [author, setAuthor] = useState(null);
+    const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
+    const [estTime, setEstTime] = useState('');
+    const [materials, setMaterials] = useState('');
+    const [author, setAuthor] = useState('');
 
     //use effect to get the course data to update
     useEffect(()=>{
@@ -36,7 +34,6 @@ const UpdateCourse = () => {
                 }
                 
                 //set state for each field to include in text areas
-                setCourse(result);
                 setTitle(result.title);
                 setDescription(result.description);
                 setEstTime(result.estimatedTime);
@@ -65,7 +62,7 @@ const UpdateCourse = () => {
         
         getCourse();
 
-    },[id]);
+    },[id, context.authenticatedUser.id, history]);
 
     let [validationErrors, setvalidationErrors] = useState(null);
     

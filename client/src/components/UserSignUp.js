@@ -46,11 +46,12 @@ const UserSignUp = () => {
             }
             try{
                 const results = await createUser(body);
-
-                if(!results.data.errors){
+                console.log(results);
+                if(results.status ===201 && !results.data.errors){
                     //successfully created user
                     //Sign them in then go to course list
                     try{
+                        console.log('trying login');
                         await context.actions.signIn(email, body.password);
                         history.push('/');
                     }

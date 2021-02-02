@@ -13,8 +13,11 @@ const Courses = () => {
     const [courses, setCourses] = useState([]);
     const history = useHistory();
 
+    
+
     //use effect to handle updating of courses when courses are deleted or added
     useEffect(()=>{
+        //function to get all courses from api
         const courseResults = async()=>{
             try{
                 let results = await axios.get('http://localhost:5000/api/courses');
@@ -31,7 +34,7 @@ const Courses = () => {
             }
         }
         courseResults();
-      }, [courses]);
+      }, [history]);
       
     return (
         <div className='bounds'>

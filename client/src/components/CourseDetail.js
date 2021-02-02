@@ -21,7 +21,8 @@ const CourseDetail = () => {
     //status if user is the course user, default to false
     const [isAuthor, setIsAuthor]= useState(false);
 
-      
+    
+         
     useEffect(()=>{
         async function getCourse(){
             try{
@@ -40,9 +41,9 @@ const CourseDetail = () => {
                 }
             }
         }
-        
+
         getCourse();
-    },[id]);
+    },[id, history]);
 
     useEffect(()=>{
         //if user is the course creator, allow set state so they can edit the course

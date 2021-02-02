@@ -41,11 +41,15 @@ router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
 
   // Route that creates a new user.
 router.post('/users', asyncHandler(async (req, res) => {
+  const errors = [];
+
+
     try {
-        await User.create(req.body);
+        let user = await User.create(req.body);
         //set location to / and set status to 201
         res.location('/').status(201).end();
       } catch (error) {
+        console.log('CAUGHT ERROR: ' + error);
         if (error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError') {
           const errors = error.errors.map(err => err.message);
           res.status(400).json({ errors });   
@@ -58,6 +62,7 @@ router.post('/users', asyncHandler(async (req, res) => {
 
 // Route that returns a list of courses.
 router.get('/courses', asyncHandler(async (req, res) => {
+  
   try{
     let courses = await Course.findAll({
       attributes: ['id', 'title', 'description','estimatedTime', 'materialsNeeded', 'userId'], 
@@ -115,6 +120,7 @@ router.get('/courses/:id', asyncHandler(async (req, res) => {
 
 // Route that creates a new course
 router.post('/courses', authenticateUser, asyncHandler(async (req, res) => {
+  
     let course; 
     try{
       course = await Course.create(req.body);

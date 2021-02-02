@@ -35,15 +35,21 @@ const CreateCourse = () => {
             }
             // post form entry to api
             let result = await posttoapi(body, context.authenticatedUser);
+            console.log(result);
             if(result.data.errors){
                 //if error set validation state
                 setvalidationErrors(result.data.errors);
             }
+            else if(result.status = 500){
+              history.push('/error')
+            }
+
             //navigate user to created course
             history.push(result.headers.location);
             return result;
         }
         catch(e){
+          console.log('CAUGHT');
             if(e.response.status === 404){
                 history.push('/notfound')
             }

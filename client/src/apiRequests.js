@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+
 import axios from 'axios';
 
 //Gets a specific course from api

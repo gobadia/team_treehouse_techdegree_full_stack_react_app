@@ -30,8 +30,8 @@ const UserContext = props => {
                 return null;
             }
             else {
-                throw new Error();
-                history.push('/error')
+                history.push('/error');
+                
             }
         }
         catch(e){

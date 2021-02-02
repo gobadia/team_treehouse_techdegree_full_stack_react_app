@@ -8,7 +8,6 @@ import {AuthContext} from '../Context';
 
 const Header = () => {
     const context= useContext(AuthContext);
-    console.log(context.authenticatedUser);
     
     return (
         <div className ='header'>
