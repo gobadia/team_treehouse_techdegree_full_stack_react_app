@@ -52,9 +52,10 @@ const CourseDetail = () => {
         }
     },[course, context.authenticatedUser])
 
-    const handleDelete= ()=>{
-        deleteFromApi(id,context.authenticatedUser);
-        history.push('/');
+    const handleDelete= async ()=>{
+        await deleteFromApi(id,context.authenticatedUser);
+        history.push('/')
+        
     }
 
     return (
@@ -65,7 +66,7 @@ const CourseDetail = () => {
                     { isAuthor ?
                         <span key={id}>
                             <Link className="button" to={`/courses/${id}/update`}>Update Course</Link>
-                           <Link className="button" onClick={handleDelete} to='/'>Delete Course</Link>
+                           <button className="button" onClick={handleDelete}>Delete Course</button>
                         </span>
                         :
                             null

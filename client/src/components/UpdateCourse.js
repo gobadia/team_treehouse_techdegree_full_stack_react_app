@@ -48,7 +48,6 @@ const UpdateCourse = () => {
                 setAuthor(`${result.User.firstName} ${result.User.lastName}`);
             }
             catch(e){
-                console.log(`ERROR: ${e.response.status}`);
                 if(e.response.status === 404){
                     history.push('/notfound')
                 }

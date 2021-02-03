@@ -18,23 +18,23 @@ const Courses = () => {
     //use effect to handle updating of courses when courses are deleted or added
     useEffect(()=>{
         //function to get all courses from api
-        const courseResults = async()=>{
-            try{
-                let results = await axios.get('http://localhost:5000/api/courses');
-                setCourses(results.data);
+        const courseResults = ()=>{
+            // try{
+                axios.get('http://localhost:5000/api/courses')
+                .then(result =>{ setCourses(result.data)} )
+                .catch(e =>{
+                    if(e.response && e.response.status === 404){
+                        history.push('/notfound')
+                    }
+                    else{
+                        history.push('/error')
+                    }
+                });
+                
+
             }
-            //handle errors getting courses
-            catch(e){
-                if(e.response && e.response.status === 404){
-                    history.push('/notfound')
-                }
-                else{
-                    history.push('/error')
-                }
-            }
-        }
         courseResults();
-      }, [history]);
+      },[history]);
       
     return (
         <div className='bounds'>

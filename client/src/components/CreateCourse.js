@@ -40,7 +40,7 @@ const CreateCourse = () => {
                 //if error set validation state
                 setvalidationErrors(result.data.errors);
             }
-            else if(result.status = 500){
+            else if(result.status === 500){
               history.push('/error')
             }
 
@@ -108,7 +108,7 @@ const CreateCourse = () => {
                 </ul>
               </div>
             </div>
-            <div className="grid-100 pad-bottom"><button className="button" type="submit">Create Course</button><button className="button button-secondary">Cancel</button></div>
+            <div className="grid-100 pad-bottom"><button className="button" type="submit">Create Course</button><button className="button button-secondary"  onClick={()=>{history.goBack()}}>Cancel</button></div>
           </form>
         </div>
       </div>
