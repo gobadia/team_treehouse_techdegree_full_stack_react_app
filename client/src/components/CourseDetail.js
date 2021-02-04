@@ -58,6 +58,11 @@ const CourseDetail = () => {
         
     }
 
+    const handleUpdate = ()=>{
+        context.setCurrentCourse(course);
+        history.push(`/courses/${id}/update`);
+    }
+
     return (
         <div>
             <div className='actions--bar'>
@@ -65,7 +70,7 @@ const CourseDetail = () => {
                     <div className="grid-100">
                     { isAuthor ?
                         <span key={id}>
-                            <Link className="button" to={`/courses/${id}/update`}>Update Course</Link>
+                            <button className="button" onClick={handleUpdate}>Update Course</button>
                            <button className="button" onClick={handleDelete}>Delete Course</button>
                         </span>
                         :
@@ -95,15 +100,8 @@ const CourseDetail = () => {
                                 <h3>{course.estimatedTime}</h3>
                                 </li>
                                 <li className="course--stats--list--item">
-                                <h4>Materials Needed</h4>
+                                    <h4>Materials Needed</h4>
                                     <ReactMarkdown source={course.materialsNeeded} />  
-                                {/* {
-                                    typeof course.materialsNeeded !== 'string' && course.materialsNeeded? 
-                                        <ul> {course.materialsNeeded.filter(material => material!== '').map(material=><li>{material}</li>) }</ul> 
-                                    : course.materialsNeeded
-                                    } */}
-                                
-                                    
                                 </li>
                             </ul>
                             </div>

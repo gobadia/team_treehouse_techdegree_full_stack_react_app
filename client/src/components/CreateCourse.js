@@ -35,7 +35,6 @@ const CreateCourse = () => {
             }
             // post form entry to api
             let result = await posttoapi(body, context.authenticatedUser);
-            console.log(result);
             if(result.data.errors){
                 //if error set validation state
                 setvalidationErrors(result.data.errors);
@@ -70,7 +69,7 @@ const CreateCourse = () => {
                     <h2 className="validation--errors--label">Validation errors</h2>
                     <div className="validation-errors">
                     <ul>
-                        {validationErrors.map(error => <li>{error}</li>)}
+                        {validationErrors.map((error,i) => <li key={i}>{error}</li>)}
                     </ul>
                     </div>
                 </div>

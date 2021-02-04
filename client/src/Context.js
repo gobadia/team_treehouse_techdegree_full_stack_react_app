@@ -12,6 +12,7 @@ const UserContext = props => {
     const history = useHistory();
     
     let [authenticatedUser, setAuthenticatedUser] = useState(Cookies.getJSON('authenticatedUser') || null);
+    let [currentCourse, setCurrentCourse] = useState(null);
 
     async function getUser(email, password) {
         const encodedCredentials = btoa(`${email}:${password}`);
@@ -60,7 +61,9 @@ const UserContext = props => {
         actions: {
             signIn,
             signOut
-        }
+        },
+        currentCourse,
+        setCurrentCourse
     }
 
     return (

@@ -46,7 +46,6 @@ const UserSignUp = () => {
             }
             try{
                 const results = await createUser(body);
-                console.log(results);
                 if(results.status ===201 && !results.data.errors){
                     //successfully created user
                     //Sign them in then go to course list

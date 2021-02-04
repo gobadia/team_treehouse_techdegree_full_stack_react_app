@@ -1,11 +1,11 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import { useParams } from "react-router-dom";
 import {
     useHistory
   } from 'react-router-dom';
 import {AuthContext} from '../Context';
 
-import {getfromapi, putToApi} from '../apiRequests';
+import {putToApi} from '../apiRequests';
 
 
 
@@ -16,55 +16,17 @@ const UpdateCourse = () => {
 
     const { id } = useParams();
 
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [estTime, setEstTime] = useState('');
-    const [materials, setMaterials] = useState('');
-    const [author, setAuthor] = useState('');
-
-    //use effect to get the course data to update
-    useEffect(()=>{
-        async function getCourse(){
-            try{
-                //gets the course info
-                let result = await getfromapi(id);
-                //if the user isn't the author, redirect to forbidden
-                if(result.User.id !== context.authenticatedUser.id){
-                    history.push('/forbidden');
-                }
-                
-                //set state for each field to include in text areas
-                setTitle(result.title);
-                setDescription(result.description);
-                setEstTime(result.estimatedTime);
-
-                //format materials for line breaks
-                let formattedMaterials = result.materialsNeeded.replaceAll('* ', '\n');
-                if(formattedMaterials.substring(0,1) === '\n'){
-                    formattedMaterials = formattedMaterials.substring(1,);
-                }
-                setMaterials(formattedMaterials);
-
-                setAuthor(`${result.User.firstName} ${result.User.lastName}`);
-            }
-            catch(e){
-                if(e.response.status === 404){
-                    history.push('/notfound')
-                }
-                else{
-                    history.push('/error')
-                }
-            }
-            
-            
-        }
-        
-        getCourse();
-
-    },[id, context.authenticatedUser.id, history]);
-
-    let [validationErrors, setvalidationErrors] = useState(null);
+    const [title, setTitle] = useState(context.currentCourse ? context.currentCourse.title : "");
+    const [description, setDescription] = useState(context.currentCourse ? context.currentCourse.description: "");
+    const [estTime, setEstTime] = useState(context.currentCourse? context.currentCourse.estimatedTime : "");
+    const [materials, setMaterials] = useState(context.currentCourse ? context.currentCourse.materialsNeeded : "");
+    const [author] = useState(context.currentCourse ? `${context.currentCourse.User.firstName} ${context.currentCourse.User.lastName}`: "");
     
+    if(!context.currentCourse){
+      history.push(`/courses/${id}`);
+    }
+      
+    let [validationErrors, setvalidationErrors] = useState(null);
 
     const handleChange = (event)=>{
         //use object to match field to state setting function
@@ -87,14 +49,16 @@ const UpdateCourse = () => {
         //update course
         try{
             let result = await putToApi(id, body, context.authenticatedUser);
-            if(result.errors){
-                setvalidationErrors(result.errors);
-                return;
+            if(result.data.errors){
+                setvalidationErrors(result.data.errors);
             }
-            history.push(`/courses/${id}`);
-            return result;
+            else{
+              history.push(`/courses/${id}`);
+              //return result;
+            }
         }
         catch(e){
+          console.log(e);
             if(e.response.status === 404){
                 history.push('/notfound')
             }
@@ -113,7 +77,7 @@ const UpdateCourse = () => {
                     <h2 className="validation--errors--label">Validation errors</h2>
                     <div className="validation-errors">
                     <ul>
-                        {validationErrors.map(error => <li>{error}</li>)}
+                        {validationErrors.map((error, i) => <li key={i}>{error}</li>)}
                     </ul>
                     </div>
                 </div>
@@ -125,13 +89,13 @@ const UpdateCourse = () => {
                 <h4 className="course--label">Course</h4>
                 <div>
                     <input id="title" name="title" type="text" className="input-title course--title--input"
-                    value={title} onChange={handleChange} />
+                    defaultValue={title} onChange={handleChange} />
                 </div>
                 <p>{`By ${author}`}</p>
               </div>
                 <div className="course--description">
                     <div>
-                        <textarea id="description" name="description" className="" placeholder="Course description..." value={description} onChange={handleChange}></textarea>
+                        <textarea id="description" name="description" className="" placeholder="Course description..." defaultValue={description} onChange={handleChange}></textarea>
                     </div>
                 </div>
             </div>
@@ -141,12 +105,12 @@ const UpdateCourse = () => {
                   <li className="course--stats--list--item">
                     <h4>Estimated Time</h4>
                     <div><input id="estimatedTime" name="estimatedTime" type="text" className="course--time--input"
-                        placeholder="Hours" value={estTime} onChange={handleChange} />
+                        placeholder="Hours" defaultValue={estTime} onChange={handleChange} />
                     </div>
                   </li>
                   <li className="course--stats--list--item">
                     <h4>Materials Needed</h4>
-                    <div><textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials..." value={materials} onChange={handleChange}></textarea></div>
+                    <div><textarea id="materialsNeeded" name="materialsNeeded" className="" placeholder="List materials..." defaultValue={materials} onChange={handleChange}></textarea></div>
                   </li>
                 </ul>
               </div>
