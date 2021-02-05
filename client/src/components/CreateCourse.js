@@ -1,6 +1,7 @@
 import React, {useState, useContext} from 'react';
 import {
-    useHistory
+    useHistory,
+    Link
   } from 'react-router-dom';
 import { posttoapi } from '../apiRequests';
 import {AuthContext} from '../Context';
@@ -107,7 +108,7 @@ const CreateCourse = () => {
                 </ul>
               </div>
             </div>
-            <div className="grid-100 pad-bottom"><button className="button" type="submit">Create Course</button><button className="button button-secondary"  onClick={()=>{history.goBack()}}>Cancel</button></div>
+            <div className="grid-100 pad-bottom"><button className="button" type="submit">Create Course</button><Link className="button button-secondary" to="/">Cancel</Link></div>
           </form>
         </div>
       </div>
